@@ -1,6 +1,21 @@
+# ST-Helpers
+
+A collection of high-performance JavaScript utility modules for SillyTavern UI extensions. All modules use pure JavaScript with no external dependencies, designed to be platform-agnostic and easy to integrate.
+
+## Modules
+
+1. **[vectorDistance.js](#vector-distance-module)** - Vector similarity and distance calculations (Cosine, Jaccard, Hamming)
+2. **[stringUtils.js](#string-utilities-module)** - Text processing, manipulation, and fuzzy matching
+3. **[domUtils.js](#dom-utilities-module)** - Browser-safe DOM manipulation without jQuery
+4. **[storageManager.js](#storage-manager-module)** - Type-safe persistent storage with TTL and namespacing
+5. **[dataStructures.js](#data-structures-module)** - Efficient data structures (LRU Cache, Trie, Queue, etc.)
+6. **[asyncUtils.js](#async-utilities-module)** - Modern async/await helpers and utilities
+
+---
+
 # Vector Distance Module
 
-A high-performance JavaScript module for calculating vector distances using pure mathematical implementations. Designed specifically for SillyTavern UI extensions, with no external dependencies.
+A high-performance JavaScript module for calculating vector distances using pure mathematical implementations.
 
 ## Features
 
@@ -432,6 +447,384 @@ No polyfills or transpilation required for ES6+ environments.
 
 ISC
 
+---
+
+# String Utilities Module
+
+Text processing and manipulation utilities for chat interfaces.
+
+## Features
+
+- Text truncation with word boundaries
+- HTML/Markdown stripping
+- Levenshtein distance for fuzzy matching
+- Case conversions (camelCase, snake_case, kebab-case, Title Case)
+- Template string interpolation with XSS protection
+- URL and email extraction
+- String validation and generation
+
+## Installation
+
+```javascript
+const StringUtils = require('./stringUtils.js');
+```
+
+## Quick Examples
+
+```javascript
+// Smart truncation
+StringUtils.truncate('Hello world', 8); // 'Hello...'
+
+// Strip HTML/Markdown
+StringUtils.stripHtml('<p>Hello <b>world</b></p>'); // 'Hello world'
+StringUtils.stripMarkdown('**Bold** and *italic*'); // 'Bold and italic'
+
+// Fuzzy string matching
+StringUtils.similarity('hello', 'hallo'); // 0.8
+
+// Case conversions
+StringUtils.toCamelCase('hello-world'); // 'helloWorld'
+StringUtils.toSnakeCase('helloWorld'); // 'hello_world'
+StringUtils.toKebabCase('helloWorld'); // 'hello-world'
+
+// Safe template interpolation
+StringUtils.template('Hello {name}!', { name: 'World' }); // 'Hello World!'
+
+// URL slug generation
+StringUtils.slugify('Hello World!'); // 'hello-world'
+
+// Extract URLs and emails
+StringUtils.extractUrls('Visit https://example.com'); // ['https://example.com']
+StringUtils.extractEmails('Contact: user@example.com'); // ['user@example.com']
+```
+
+See `stringUtils.js` for full API documentation.
+
+---
+
+# DOM Utilities Module
+
+Browser-safe DOM manipulation without jQuery.
+
+## Features
+
+- Safe element creation with XSS protection
+- Event delegation support
+- Debounce and throttle functions
+- CSS class manipulation
+- Smooth scrolling
+- Intersection Observer wrapper for visibility detection
+- Query caching for performance
+
+## Installation
+
+```javascript
+const DOMUtils = require('./domUtils.js');
+```
+
+## Quick Examples
+
+```javascript
+// Create element safely
+const button = DOMUtils.createElement('button', {
+  attrs: { id: 'myButton', class: 'btn' },
+  text: 'Click Me',
+  style: { padding: '10px' },
+  data: { action: 'submit' }
+});
+
+// Query elements
+const element = DOMUtils.query('.my-class');
+const elements = DOMUtils.queryAll('.item');
+
+// Event delegation
+DOMUtils.on(document, 'click', '.button', (e) => {
+  console.log('Button clicked');
+});
+
+// Debounce and throttle
+const debouncedSearch = DOMUtils.debounce((query) => {
+  console.log('Searching:', query);
+}, 300);
+
+// Smooth scroll
+DOMUtils.scrollTo({ target: '#section2', offset: -50 });
+
+// Class manipulation
+DOMUtils.addClass(element, 'active');
+DOMUtils.toggleClass(element, 'expanded');
+
+// Visibility detection
+const isVisible = await DOMUtils.isVisible(element);
+```
+
+See `domUtils.js` for full API documentation.
+
+---
+
+# Storage Manager Module
+
+Type-safe persistent storage with advanced features.
+
+## Features
+
+- localStorage/sessionStorage wrapper with type safety
+- Automatic JSON serialization/deserialization
+- Namespace isolation to prevent key collisions
+- TTL (Time To Live) support for automatic expiration
+- Storage quota detection and management
+- Import/export functionality
+- In-memory fallback when storage unavailable
+- Bulk operations
+
+## Installation
+
+```javascript
+const { StorageManager, createStorage, createSessionStorage } = require('./storageManager.js');
+```
+
+## Quick Examples
+
+```javascript
+// Create storage instance
+const storage = new StorageManager({ namespace: 'myApp' });
+
+// Store and retrieve data
+storage.set('username', 'john_doe');
+storage.set('preferences', { theme: 'dark', language: 'en' });
+
+console.log(storage.get('username')); // 'john_doe'
+console.log(storage.get('preferences')); // { theme: 'dark', language: 'en' }
+
+// Store with TTL (expires after 1 hour)
+storage.set('session', { id: '12345' }, { ttl: 3600000 });
+
+// Bulk operations
+storage.setMany({
+  setting1: 'value1',
+  setting2: 'value2'
+});
+
+// Check existence
+if (storage.has('username')) {
+  // Do something
+}
+
+// Get all keys
+const keys = storage.keys();
+
+// Scoped storage
+const userStorage = storage.scope('user');
+userStorage.set('profile', { name: 'John' });
+
+// Export and import
+const backup = storage.export();
+storage.import(backup, true); // merge with existing
+
+// Watch for changes (browser only)
+const stopWatching = storage.watch('theme', (newTheme) => {
+  console.log('Theme changed:', newTheme);
+});
+```
+
+See `storageManager.js` for full API documentation.
+
+---
+
+# Data Structures Module
+
+Efficient data structures for common patterns.
+
+## Features
+
+- **LRU Cache** - Perfect for caching chat messages or API responses
+- **Queue & Priority Queue** - FIFO and priority-based processing
+- **Circular Buffer** - Fixed-size history with automatic overflow handling
+- **Trie** - Efficient autocomplete and prefix matching
+- **Bloom Filter** - Space-efficient probabilistic membership testing
+- **Bidirectional Map** - Two-way key-value lookups
+- **Set Operations** - Union, intersection, difference, etc.
+
+## Installation
+
+```javascript
+const { LRUCache, Queue, PriorityQueue, CircularBuffer, Trie, BloomFilter, BiMap, SetOps } = require('./dataStructures.js');
+```
+
+## Quick Examples
+
+```javascript
+// LRU Cache
+const cache = new LRUCache(100);
+cache.set('key1', 'value1');
+const value = cache.get('key1');
+
+// Queue
+const queue = new Queue();
+queue.enqueue('task1');
+const task = queue.dequeue();
+
+// Circular Buffer (for chat history)
+const buffer = new CircularBuffer(50);
+buffer.push('message1');
+const recent = buffer.peek();
+
+// Trie (for autocomplete)
+const trie = new Trie();
+trie.insert('hello');
+trie.insert('help');
+const suggestions = trie.getAllWithPrefix('hel'); // ['hello', 'help']
+
+// Priority Queue
+const pq = new PriorityQueue((a, b) => b.priority - a.priority);
+pq.enqueue({ task: 'urgent', priority: 10 });
+pq.enqueue({ task: 'normal', priority: 5 });
+
+// Bloom Filter
+const filter = new BloomFilter(1000, 3);
+filter.add('item1');
+if (filter.has('item1')) {
+  // Probably exists
+}
+
+// Bidirectional Map
+const bimap = new BiMap();
+bimap.set('key', 'value');
+bimap.getKey('value'); // 'key'
+
+// Set Operations
+const set1 = new Set([1, 2, 3]);
+const set2 = new Set([2, 3, 4]);
+SetOps.union(set1, set2); // Set([1, 2, 3, 4])
+SetOps.intersection(set1, set2); // Set([2, 3])
+```
+
+See `dataStructures.js` for full API documentation.
+
+---
+
+# Async Utilities Module
+
+Modern async/await helpers for API calls and async operations.
+
+## Features
+
+- Promise retry with exponential backoff
+- Timeout wrapper for promises
+- Sequential and parallel execution with concurrency control
+- Rate limiting
+- Batch processing with progress tracking
+- Cancelable promises
+- Debounce and throttle for async functions
+- Async queue for ordered execution
+- Memoization with TTL
+- Polling with conditions
+- Async array operations (map, filter, reduce)
+
+## Installation
+
+```javascript
+const AsyncUtils = require('./asyncUtils.js');
+```
+
+## Quick Examples
+
+```javascript
+// Sleep/delay
+await AsyncUtils.sleep(1000);
+
+// Retry with exponential backoff
+const result = await AsyncUtils.retry(
+  () => fetch('/api/data'),
+  { maxAttempts: 5, delay: 500, backoffFactor: 2 }
+);
+
+// Add timeout to promise
+const data = await AsyncUtils.timeout(
+  fetch('/api/slow-endpoint'),
+  5000 // 5 second timeout
+);
+
+// Sequential execution
+const result = await AsyncUtils.sequential([
+  async (data) => data + 1,
+  async (data) => data * 2
+], 5); // Returns 12
+
+// Batch processing with progress
+const results = await AsyncUtils.batch(
+  items,
+  async (batch) => processBatch(batch),
+  {
+    batchSize: 10,
+    delay: 100,
+    onProgress: (processed, total) => {
+      console.log(`Progress: ${processed}/${total}`);
+    }
+  }
+);
+
+// Rate limiting
+const limiter = AsyncUtils.rateLimiter(5, 1000); // 5 calls per second
+await limiter.execute(() => fetch('/api/data'));
+
+// Cancelable promise
+const { promise, cancel } = AsyncUtils.cancelable((resolve, reject, onCancel) => {
+  const timeout = setTimeout(resolve, 5000);
+  onCancel(() => clearTimeout(timeout));
+});
+// Later: cancel();
+
+// Memoization with TTL
+const memoizedFetch = AsyncUtils.memoize(
+  async (url) => fetch(url).then(r => r.json()),
+  { ttl: 60000 }
+);
+
+// Polling until condition met
+const result = await AsyncUtils.poll(
+  () => fetch('/api/status'),
+  (status) => status.complete === true,
+  { interval: 500, maxAttempts: 20 }
+);
+
+// Async map with concurrency limit
+const results = await AsyncUtils.map(
+  [1, 2, 3, 4, 5],
+  async (n) => processItem(n),
+  2 // Max 2 concurrent operations
+);
+```
+
+See `asyncUtils.js` for full API documentation.
+
+---
+
+## Running Examples
+
+Each module has its own example file demonstrating its features:
+
+```bash
+# String Utilities examples
+node examples/stringUtilsExample.js
+
+# Storage Manager examples
+node examples/storageManagerExample.js
+
+# Data Structures examples
+node examples/dataStructuresExample.js
+
+# Async Utilities examples
+node examples/asyncUtilsExample.js
+
+# Vector Distance examples
+node examples/rawVectorDistance.js
+node examples/documentSearchExample.js
+
+# All modules combined (comprehensive overview)
+node examples/allModulesExample.js
+```
+
 ## Contributing
 
-This module is designed to be dependency-free and self-contained. All algorithms use pure JavaScript and native Math functions only.
+All modules are designed to be dependency-free and self-contained. They use pure JavaScript and native APIs only.
