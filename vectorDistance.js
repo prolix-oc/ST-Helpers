@@ -677,7 +677,7 @@ const Utils = {
 };
 
 // Export all modules
-module.exports = {
+export {
   Jaccard,
   Hamming,
   Cosine,

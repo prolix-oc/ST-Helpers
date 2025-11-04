@@ -3,7 +3,7 @@
  * Demonstrates efficient data structures for common patterns
  */
 
-const { 
+import { 
   LRUCache, 
   Queue, 
   PriorityQueue, 
@@ -12,7 +12,7 @@ const {
   BloomFilter, 
   BiMap, 
   SetOps 
-} = require('../dataStructures');
+} from '../dataStructures.js';
 
 console.log('=== Data Structures Examples ===\n');
 

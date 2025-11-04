@@ -889,7 +889,7 @@ const SetOps = {
 };
 
 // Export all data structures
-module.exports = {
+export {
   LRUCache,
   Queue,
   PriorityQueue,

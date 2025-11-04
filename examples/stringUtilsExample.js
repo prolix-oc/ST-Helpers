@@ -3,7 +3,7 @@
  * Demonstrates text processing and manipulation features
  */
 
-const StringUtils = require('../stringUtils');
+import StringUtils from '../stringUtils.js';
 
 console.log('=== String Utilities Examples ===\n');
 

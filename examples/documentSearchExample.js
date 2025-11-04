@@ -3,7 +3,7 @@
  * Demonstrates the high-level DocumentSearch API
  */
 
-const { DocumentSearch } = require('../vectorDistance.js');
+import { DocumentSearch } from '../vectorDistance.js';
 
 console.log('='.repeat(70));
 console.log('DOCUMENT SEARCH API - DEMONSTRATION');

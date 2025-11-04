@@ -3,7 +3,7 @@
  * Demonstrates persistent storage with advanced features
  */
 
-const { StorageManager } = require('../storageManager');
+import { StorageManager } from '../storageManager.js';
 
 console.log('=== Storage Manager Examples ===\n');
 

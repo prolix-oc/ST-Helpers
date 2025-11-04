@@ -551,4 +551,4 @@ const StringUtils = {
 };
 
 // Export module
-module.exports = StringUtils;
+export default StringUtils;

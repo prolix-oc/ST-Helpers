@@ -3,7 +3,7 @@
  * Demonstrates modern async/await helpers and utilities
  */
 
-const AsyncUtils = require('../asyncUtils');
+import AsyncUtils from '../asyncUtils.js';
 
 console.log('=== Async Utilities Examples ===\n');
 

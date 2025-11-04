@@ -630,4 +630,4 @@ const AsyncUtils = {
 };
 
 // Export module
-module.exports = AsyncUtils;
+export default AsyncUtils;

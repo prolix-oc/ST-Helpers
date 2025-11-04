@@ -4,12 +4,12 @@
  */
 
 // Import all modules
-const StringUtils = require('../stringUtils');
-const DOMUtils = require('../domUtils');
-const { StorageManager } = require('../storageManager');
-const { LRUCache, Queue, Trie, CircularBuffer } = require('../dataStructures');
-const AsyncUtils = require('../asyncUtils');
-const { Cosine } = require('../vectorDistance');
+import StringUtils from '../stringUtils.js';
+import DOMUtils from '../domUtils.js';
+import { StorageManager } from '../storageManager.js';
+import { LRUCache, Queue, Trie, CircularBuffer } from '../dataStructures.js';
+import AsyncUtils from '../asyncUtils.js';
+import { Cosine } from '../vectorDistance.js';
 
 console.log('=== ST-Helpers Module Examples ===\n');
 

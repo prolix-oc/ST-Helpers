@@ -573,8 +573,5 @@ function createSessionStorage(options = {}) {
 }
 
 // Export module
-module.exports = {
-  StorageManager,
-  createStorage,
-  createSessionStorage
-};
+export { StorageManager, createStorage, createSessionStorage };
+export default StorageManager;

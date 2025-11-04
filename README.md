@@ -2,6 +2,31 @@
 
 A collection of high-performance JavaScript utility modules for SillyTavern UI extensions. All modules use pure JavaScript with no external dependencies, designed to be platform-agnostic and easy to integrate.
 
+**Now using ES6 modules!** All modules have been converted from CommonJS to ES6 module syntax.
+
+## Usage
+
+All modules are now ES6 modules (using `import`/`export` syntax). To use them:
+
+**In ES6 projects** (recommended):
+```javascript
+import AsyncUtils from './asyncUtils.js';
+import { Jaccard, Cosine } from './vectorDistance.js';
+```
+
+**In CommonJS projects**:
+Since these are now ES6 modules, you'll need to use dynamic imports:
+```javascript
+// Async import in CommonJS
+const { default: AsyncUtils } = await import('./asyncUtils.js');
+// Or
+import('./vectorDistance.js').then(({ Jaccard, Cosine }) => {
+  // Use the modules here
+});
+```
+
+Alternatively, ensure your `package.json` has `"type": "module"` to use ES6 imports directly.
+
 ## Modules
 
 1. **[vectorDistance.js](#vector-distance-module)** - Vector similarity and distance calculations (Cosine, Jaccard, Hamming)
@@ -33,6 +58,12 @@ A high-performance JavaScript module for calculating vector distances using pure
 
 Simply copy `vectorDistance.js` into your project directory.
 
+**ES6 Modules (recommended):**
+```javascript
+import { Jaccard, Hamming, Cosine, DocumentSearch, Utils } from './vectorDistance.js';
+```
+
+**CommonJS (legacy):**
 ```javascript
 const { Jaccard, Hamming, Cosine, DocumentSearch, Utils } = require('./vectorDistance.js');
 ```

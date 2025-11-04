@@ -719,4 +719,4 @@ const DOMUtils = {
 };
 
 // Export module
-module.exports = DOMUtils;
+export default DOMUtils;

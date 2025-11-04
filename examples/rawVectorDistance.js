@@ -3,7 +3,7 @@
  * Demonstrates the three distance algorithms: Jaccard, Hamming, and Cosine
  */
 
-const { Jaccard, Hamming, Cosine, Utils } = require('../vectorDistance.js');
+import { Jaccard, Hamming, Cosine, Utils } from '../vectorDistance.js';
 
 console.log('='.repeat(60));
 console.log('VECTOR DISTANCE MODULE - USAGE EXAMPLES');
