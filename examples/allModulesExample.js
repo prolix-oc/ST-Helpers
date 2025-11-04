@@ -100,10 +100,30 @@ const isVisible = await DOMUtils.isVisible(element);
 DOMUtils.addClass(element, 'active', 'highlight');
 DOMUtils.removeClass(element, 'inactive');
 DOMUtils.toggleClass(element, 'expanded');
+
+// NEW: Get distance to viewport edges
+const viewportDistance = DOMUtils.getDistanceToViewport(element);
+console.log('Distance to top:', viewportDistance.top);
+console.log('Distance to right:', viewportDistance.right);
+console.log('Distance to bottom:', viewportDistance.bottom);
+console.log('Distance to left:', viewportDistance.left);
+
+// NEW: Get distance between two elements
+const element1 = DOMUtils.query('.header');
+const element2 = DOMUtils.query('.footer');
+const distance = DOMUtils.getDistanceBetween(element1, element2);
+console.log('Horizontal distance:', distance.horizontal);
+console.log('Vertical distance:', distance.vertical);
+console.log('Diagonal distance:', distance.diagonal);
+
+// NEW: Log detailed element measurements for debugging
+const measurements = DOMUtils.logElementMeasurements('.my-element', 'Test Element');
+// Outputs comprehensive console.group with dimensions, position, padding, margin, etc.
+// Returns measurement object for further use
 */
 
 console.log('DOM utilities provide browser-safe manipulation methods');
-console.log('See domUtils.js for full API documentation\n');
+console.log('See domUtils.js and examples/domUtilsExample.js for full API documentation\n');
 
 // ============================================================================
 // STORAGE MANAGER

@@ -546,11 +546,13 @@ Browser-safe DOM manipulation without jQuery.
 - Smooth scrolling
 - Intersection Observer wrapper for visibility detection
 - Query caching for performance
+- **NEW:** Element distance calculations (viewport and between elements)
+- **NEW:** Comprehensive element measurement logging for debugging
 
 ## Installation
 
 ```javascript
-const DOMUtils = require('./domUtils.js');
+import DOMUtils from './domUtils.js';
 ```
 
 ## Quick Examples
@@ -587,9 +589,83 @@ DOMUtils.toggleClass(element, 'expanded');
 
 // Visibility detection
 const isVisible = await DOMUtils.isVisible(element);
+
+// NEW: Get distance to viewport edges
+const viewportDist = DOMUtils.getDistanceToViewport(element);
+console.log('Distance to top:', viewportDist.top);
+console.log('Distance to right:', viewportDist.right);
+console.log('Distance to bottom:', viewportDist.bottom);
+console.log('Distance to left:', viewportDist.left);
+
+// NEW: Get distance between two elements
+const distance = DOMUtils.getDistanceBetween('.header', '.footer');
+console.log('Horizontal distance:', distance.horizontal);
+console.log('Vertical distance:', distance.vertical);
+console.log('Diagonal distance:', distance.diagonal);
+
+// NEW: Log comprehensive element measurements for debugging
+const measurements = DOMUtils.logElementMeasurements('.my-element', 'Debug');
+// Outputs detailed console.group with dimensions, position, padding, margin, etc.
+// Returns object with all measurement data for programmatic use
 ```
 
-See `domUtils.js` for full API documentation.
+## New Distance & Measurement Features
+
+### Distance to Viewport Edges
+
+Calculate how far an element is from each edge of the viewport:
+
+```javascript
+const distances = DOMUtils.getDistanceToViewport(element);
+// Returns: { top: number, right: number, bottom: number, left: number }
+
+// Useful for tooltip positioning, sticky element behavior, etc.
+if (distances.bottom < 100) {
+  console.log('Element is near bottom of viewport');
+}
+```
+
+### Distance Between Elements
+
+Calculate the distance between two elements:
+
+```javascript
+const distance = DOMUtils.getDistanceBetween(element1, element2);
+// Returns: { 
+//   horizontal: number,  // Horizontal gap (0 if overlapping)
+//   vertical: number,    // Vertical gap (0 if overlapping)
+//   diagonal: number     // Diagonal distance
+// }
+
+// Useful for layout validation, collision detection, etc.
+if (distance.vertical < 20) {
+  console.warn('Elements are too close together');
+}
+```
+
+### Element Measurement Logging
+
+Log comprehensive element measurements to the console for debugging:
+
+```javascript
+const measurements = DOMUtils.logElementMeasurements('.problematic-element', 'Layout Debug');
+// Outputs to console:
+//   📏 Layout Debug Measurements
+//   ├─ Element: <div class="problematic-element">
+//   ├─ Dimensions: { width, height, computedWidth, computedHeight }
+//   ├─ Position: { top, right, bottom, left, x, y }
+//   ├─ Distance to Viewport Edges: { top, right, bottom, left }
+//   ├─ Viewport Size: { width, height }
+//   ├─ Padding: { top, right, bottom, left }
+//   └─ Margin: { top, right, bottom, left }
+
+// Also returns the measurements object for programmatic use
+if (measurements.distanceToViewport.right < 0) {
+  console.error('Element is outside viewport!');
+}
+```
+
+See `domUtils.js` and `examples/domUtilsExample.js` for full API documentation and practical examples.
 
 ---
 
